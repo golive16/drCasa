@@ -1,0 +1,69 @@
+import fixture.*
+
+test "Una Malaria con 5000 celulas Amenazadas y Lupus de 10000" {
+	assert.equals(5000, fixture.malaria().celulasAmenazadas())
+	assert.equals(10000, fixture.lupus().celulasAmenazadas())
+}
+test "Logan con valores saludables" {
+	assert.equals(37, fixture.logan().temperatura())
+	assert.equals(1000000, fixture.logan().celulasSaludables())
+}
+test "La Malaria se reproduce" {
+	const malariaReproducida = fixture.malaria().reproducir()
+	assert.equals(10000, malariaReproducida.celulasAmenazadas())
+}
+test "Logan contraiga la Malaria que se reproduce" {
+	const malariaReproducida = fixture.malaria().reproducir()
+	const loganConMalariaReproducida = fixture.logan().contraer(malariaReproducida)
+	assert.that(loganConMalariaReproducida.enfermedades().contains(malariaReproducida))
+}
+test "Logan viva un día de su vida" {
+	const malariaReproducida = fixture.malaria().reproducir()
+	const loganConMalariaReproducida = fixture.logan().contraer(malariaReproducida)
+	const loganViveUnDiaConMalariaReproducida = loganConMalariaReproducida.vivirUnDia()
+	assert.equals(47, loganViveUnDiaConMalariaReproducida.temperatura())
+}
+test "Logan contraiga Malaria y Lupus" {
+	const malariaReproducida = fixture.malaria().reproducir()
+	const lupus = fixture.lupus()
+	const loganConLupus = fixture.logan().contraer(lupus)
+	const loganConMalariaReproducida = fixture.logan().contraer(malariaReproducida)
+	const loganViveUnDiaConMalariaReproducida = loganConMalariaReproducida.vivirUnDia()
+	const loganViveUnDiaConLupus = loganConLupus.vivirUnDia()
+	assert.equals(47, loganViveUnDiaConMalariaReproducida.temperatura())
+	assert.equals(990000, loganViveUnDiaConLupus.celulasSaludables())
+}
+test "Logan viva otro día de su vida" {
+	const malariaReproducida = fixture.malaria().reproducir()
+	const lupus = fixture.lupus()
+	const loganConLupus = fixture.logan().contraer(lupus)
+	const loganConMalariaReproducida = fixture.logan().contraer(malariaReproducida)
+	const loganViveUnDiaConMalariaReproducida = loganConMalariaReproducida.vivirUnDia()
+	const loganViveOtroDiaConMalariaReproducida = loganViveUnDiaConMalariaReproducida.vivirUnDia()
+	const loganViveUnDiaConLupus = loganConLupus.vivirUnDia()
+	const loganViveOtroDiaConLupus = loganViveUnDiaConLupus.vivirUnDia()
+	assert.equals(57, loganViveOtroDiaConMalariaReproducida.temperatura())
+	assert.equals(980000, loganViveOtroDiaConLupus.celulasSaludables())
+}
+test "Que Malaria se atenue en 1000 y el Lupus en 500" {
+	const malariaReproducida = fixture.malaria().reproducir()
+	const lupus = fixture.lupus()
+	const malariaReproducidaYAtenuada = malariaReproducida.atenuar(1000)
+	const lupusAtenuado = lupus.atenuar(500)
+	assert.equals(9000, malariaReproducidaYAtenuada.celulasAmenazadas())
+	assert.equals(9500, lupusAtenuado.celulasAmenazadas())
+}
+test "Logan viva un tercer día de su vida" {
+	const malariaReproducida = fixture.malaria().reproducir()
+	const lupus = fixture.lupus()
+	const loganConLupus = fixture.logan().contraer(lupus)
+	const loganConMalariaReproducida = fixture.logan().contraer(malariaReproducida)
+	const loganViveUnDiaConMalariaReproducida = loganConMalariaReproducida.vivirUnDia()
+	const loganViveOtroDiaConMalariaReproducida = loganViveUnDiaConMalariaReproducida.vivirUnDia()
+	const loganViveOtroDiaMasConMalariaReproducida = loganViveOtroDiaConMalariaReproducida.vivirUnDia()
+	const loganViveUnDiaConLupus = loganConLupus.vivirUnDia()
+	const loganViveOtroDiaConLupus = loganViveUnDiaConLupus.vivirUnDia()
+	const loganViveOtroDiaMasConLupus = loganViveOtroDiaConLupus.vivirUnDia()
+	assert.equals(67, loganViveOtroDiaMasConMalariaReproducida.temperatura())
+	assert.equals(970000, loganViveOtroDiaMasConLupus.celulasSaludables())
+}

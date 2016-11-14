@@ -1,0 +1,46 @@
+import fixture.*
+
+test "Que Cameron atienda a Logan" {
+	const cameron = fixture.cameron()
+	const logan = fixture.logan()
+	const malaria = fixture.malaria()
+	const loganConMalaria = logan.contraer(malaria)
+	const loganViveConMalaria = loganConMalaria.vivirUnDia()
+	const loganAtendido = cameron.atender(loganViveConMalaria)
+	assert.equals(42, loganAtendido.temperatura())
+}
+test "Que Cameron atienda a Foreman" {
+	const cameron = fixture.cameron()
+	const foreman = fixture.foreman()
+	const lupus = fixture.lupus()
+	const foremanConLupus = foreman.contraer(lupus)
+	const foremanViveConLupus = foremanConLupus.vivirUnDia()
+	const foremanAtendido = cameron.atender(foremanViveConLupus)
+	assert.equals(990000, foremanAtendido.celulasSaludables())
+}
+test "Si un médico contrae una enfermedad, trata de curarse a sí mismo" {
+	const foreman = fixture.foreman()
+	const lupus = fixture.lupus()
+	const foremanConLupus = foreman.contraer(lupus)
+	const foremanViveConLupus = foremanConLupus.vivirUnDia()
+	const foremanAtendido = foreman.atender(foremanViveConLupus)
+	assert.equals(990000, foremanAtendido.celulasSaludables())
+}
+test "House como Jefe de Departamento atiende a Cameron" {
+	const house = fixture.house()
+	const foreman = fixture.foreman()
+	const cameron = fixture.cameron()
+	const lupus = fixture.lupus()
+	const houseContrataAForeman = house.contratar(foreman)
+	const cameronConLupus = cameron.contraer(lupus)
+	const cameronViveConLupus = cameronConLupus.vivirUnDia()
+	const foremanAtendido = houseContrataAForeman.atender(cameronViveConLupus)
+	assert.equals(990000, foremanAtendido.celulasSaludables())
+}
+test "House contrae la Muerte" {
+	const house = fixture.house()
+	const muerte = fixture.muerte()
+	const houseContraeMuerte = house.contraer(muerte)
+	const houseMuerto = houseContraeMuerte.vivirUnDia()
+	assert.equals(0, houseMuerto.temperatura())
+}
